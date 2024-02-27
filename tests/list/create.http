@@ -1,4 +1,4 @@
-# Create list
+# Add scan
 
-GET http://127.0.0.1:8000/list/create
+GET http://127.0.0.1:8000/scan/add?list_code=amwhzqyy&scan_value=123456
 Accept: application/json

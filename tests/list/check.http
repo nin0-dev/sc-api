@@ -1,4 +1,4 @@
 # Check list
 
-GET http://127.0.0.1:8000/list/check?list_code=amqlsssqkxme
+GET http://127.0.0.1:8000/list/check?list_code=amqlqkxm
 Accept: application/json
