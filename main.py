@@ -24,3 +24,16 @@ async def create_list():
     # Respond
     return {"success": True, "list_code": list_code}
 
+
+@app.get("/list/check")
+async def check_list(list_code: str = "invalid"):
+    # Query specific list code
+    cursor.execute(f"SELECT list_code FROM listcodes WHERE list_code='{list_code}'")
+    result = cursor.fetchone()
+    # Respond
+    if cursor.fetchone is not None:
+        # The list exists
+        return {"success": True}
+    else:
+        # The list doesn't exist
+        return {"success": False}
