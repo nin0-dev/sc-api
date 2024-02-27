@@ -1,4 +1,4 @@
 # Ping
 
-GET http://127.0.0.1:8000/list/check
+GET http://127.0.0.1:8000/list/create
 Accept: application/json

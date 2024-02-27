@@ -12,7 +12,7 @@ async def ping():
     return {"success": True}
 
 
-@app.get("/list/check")
+@app.get("/list/create")
 async def create_list():
     # Get list code
     list_code = util.get_random_string(8)
@@ -23,3 +23,4 @@ async def create_list():
     print(f"Created list {list_code}")
     # Respond
     return {"success": True, "list_code": list_code}
+
