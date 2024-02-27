@@ -31,7 +31,7 @@ async def check_list(list_code: str = "invalid"):
     cursor.execute(f"SELECT list_code FROM listcodes WHERE list_code='{list_code}'")
     result = cursor.fetchone()
     # Respond
-    if cursor.fetchone is not None:
+    if result is not None:
         # The list exists
         return {"success": True}
     else:
