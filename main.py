@@ -1,8 +1,10 @@
 from fastapi import FastAPI
+import util
 import sqlite3
 
 app = FastAPI()
 connection = sqlite3.connect("database.db")
+cursor = connection.cursor()
 
 
 @app.get("/")
@@ -10,3 +12,14 @@ async def ping():
     return {"success": True}
 
 
+@app.get("/list/check")
+async def create_list():
+    # Get list code
+    list_code = util.get_random_string(8)
+    # Add it to database
+    cursor.execute("CREATE TABLE IF NOT EXISTS listcodes (list_code TEXT);")
+    cursor.execute(f"INSERT INTO listcodes VALUES ('{list_code}');")
+    connection.commit()
+    print(f"Created list {list_code}")
+    # Respond
+    return {"success": True, "list_code": list_code}
