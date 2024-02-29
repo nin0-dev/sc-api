@@ -7,3 +7,14 @@
 /.idea/.gitignore
 /database.db
 !/tests/
+/.idea/.name
+/tests/scan/add.http
+/tests/list/check.http
+/tests/list/create.http
+/.idea/dataSources.xml
+/tests/list/delete.http
+/tests/ping.http
+/.idea/scancount.iml
+/.idea/sqldialects.xml
+.idea
+tests

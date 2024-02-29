@@ -13,7 +13,7 @@ async def ping():
 
 
 # <editor-fold desc="List management">
-@app.get("/list/create")
+@app.get("/list/create")#
 async def create_list(flag: int = 0, count_before_flag: int = 0):
     # Get list code
     list_code = util.get_random_string(8)
@@ -54,6 +54,21 @@ async def delete_list(list_code: str = None):
     # Delete list
     cursor.execute(f"DELETE FROM listcodes WHERE list_code='{list_code}'")
     cursor.execute(f"DELETE FROM scans WHERE list_code='{list_code}'")
+    connection.commit()
+    # Respond
+    return {"success": True}
+
+
+@app.get("/list/config")
+async def config_list(list_code: str = None, flag: int = 0, count_before_flag: int = 0):
+    # Check if list exists
+    cursor.execute(f"SELECT list_code FROM listcodes WHERE list_code='{list_code}'")
+    result = cursor.fetchone()
+    if result is None:
+        return {"success": False}
+    # Update settings
+    cursor.execute(f"UPDATE listcodes SET flag = {flag} WHERE list_code='{list_code}'")
+    cursor.execute(f"UPDATE listcodes SET count_before_flag = {count_before_flag} WHERE list_code='{list_code}'")
     connection.commit()
     # Respond
     return {"success": True}
