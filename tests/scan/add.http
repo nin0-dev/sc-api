@@ -1,4 +1,0 @@
-# Add a scan
-
-GET http://127.0.0.1:8000/scan/add?list_code=amqlqkxm&scan_value=872342
-Accept: application/json
