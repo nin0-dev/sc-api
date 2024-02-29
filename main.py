@@ -14,12 +14,12 @@ async def ping():
 
 # <editor-fold desc="List management">
 @app.get("/list/create")
-async def create_list():
+async def create_list(flag: int = 0, count_before_flag: int = 0):
     # Get list code
     list_code = util.get_random_string(8)
     # Add it to database
     cursor.execute("CREATE TABLE IF NOT EXISTS listcodes (list_code TEXT);")
-    cursor.execute(f"INSERT INTO listcodes VALUES ('{list_code}');")
+    cursor.execute(f"INSERT INTO listcodes VALUES ('{list_code}', {flag}, {count_before_flag});")
     connection.commit()
     print(f"Created list {list_code}")
     # Respond
