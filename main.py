@@ -18,7 +18,8 @@ async def create_list(flag: int = 0, count_before_flag: int = 0):
     # Get list code
     list_code = util.get_random_string(8)
     # Add it to database
-    cursor.execute("CREATE TABLE IF NOT EXISTS listcodes (list_code TEXT);")
+    cursor.execute("CREATE TABLE IF NOT EXISTS listcodes (list_code TEXT, flag INTEGER, count_before_flag INTEGER);")
+    connection.commit()
     cursor.execute(f"INSERT INTO listcodes VALUES ('{list_code}', {flag}, {count_before_flag});")
     connection.commit()
     print(f"Created list {list_code}")
@@ -34,7 +35,10 @@ async def check_list(list_code: str = None):
     # Respond
     if result is not None:
         # The list exists
-        return {"success": True}
+        # Query list info
+        cursor.execute(f"SELECT flag, count_before_flag FROM listcodes WHERE list_code='{list_code}'")
+        result = cursor.fetchone()
+        return {"success": True, "flag": result[0], "count_before_flag": result[1]}
     else:
         # The list doesn't exist
         return {"success": False}
@@ -67,6 +71,7 @@ async def add_scan(list_code: str = None, scan_value: str = None):
         return {"success": False}
     # Create scans table (if needed)
     cursor.execute("CREATE TABLE IF NOT EXISTS 'scans' (list_code CHAR(8), value VARCHAR(255), scan_count INTEGER);")
+    connection.commit()
     # Set scan count
     scan_count = 1
     cursor.execute(f"SELECT scan_count FROM scans WHERE value='{scan_value}' AND list_code='{list_code}'")
