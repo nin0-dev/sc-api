@@ -38,6 +38,21 @@ async def check_list(list_code: str = None):
     else:
         # The list doesn't exist
         return {"success": False}
+
+
+@app.get("/list/delete")
+async def delete_list(list_code: str = None):
+    # Check if list exists
+    cursor.execute(f"SELECT list_code FROM listcodes WHERE list_code='{list_code}'")
+    result = cursor.fetchone()
+    if result is None:
+        return {"success": False}
+    # Delete list
+    cursor.execute(f"DELETE FROM listcodes WHERE list_code='{list_code}'")
+    cursor.execute(f"DELETE FROM scans WHERE list_code='{list_code}'")
+    connection.commit()
+    # Respond
+    return {"success": True}
 # </editor-fold>
 
 
