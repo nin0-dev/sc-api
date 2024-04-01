@@ -85,7 +85,8 @@ async def config_list(list_code: str = None, flag: int = 0, count_before_flag: i
 
 
 @app.get("/scan/add")
-async def add_scan(list_code: str = None, scan_value: str = None):
+async def add_scan(list_code: str = None, raw_scan_value: str = None):
+    scan_value = raw_scan_value.strip("0")
     if list_code is None or scan_value is None:
         return {"success": False}
     # Check if list is existing
@@ -112,3 +113,23 @@ async def add_scan(list_code: str = None, scan_value: str = None):
         connection.commit()
         return {"success": True, "scan_value": scan_value, "scan_count": scan_count}
 
+
+@app.get("/stats")
+async def stats(list_code: str = None):
+    if list_code is None:
+        return {"success": False}
+    # Check if list is existing
+    cursor.execute(f"SELECT list_code FROM listcodes WHERE list_code='{list_code}'")
+    result = cursor.fetchone()
+    if result is None:
+        return {"success": False}
+    # Query count of individual barcodes
+    cursor.execute(f"SELECT COUNT(*) AS row_count FROM scans WHERE list_code='{list_code}'")
+    barcode_count = cursor.fetchone()
+    # Query count of total scans
+    cursor.execute(f"SELECT SUM(scan_count) AS total_scan_count FROM scans WHERE list_code='{list_code}'")
+    total_scans = cursor.fetchone()
+    if result is None:
+        return {"success": True, "barcode_count": 0}
+    else:
+        return {"success": True, "barcode_count": barcode_count[0], "total_scans": total_scans[0]}

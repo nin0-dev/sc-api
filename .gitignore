@@ -18,3 +18,9 @@
 /.idea/sqldialects.xml
 .idea
 tests
+bin
+lib
+include
+__pycache__
+pyvenv.cfg
+start.sh
